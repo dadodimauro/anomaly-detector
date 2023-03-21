@@ -6,7 +6,7 @@ from sklearn import preprocessing
 import torch
 import torch.utils.data as data_utils
 
-from columns import get_columns_list
+from src.data.columns import get_columns_list
 
 
 # Transform all columns into float64

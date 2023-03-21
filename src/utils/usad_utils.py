@@ -3,7 +3,7 @@ import pandas as pd
 
 import csv
 
-from utils import *
+from src.utils.utils import *
 
 
 def evaluate(model, device, val_loader, n):
