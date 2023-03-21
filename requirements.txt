@@ -1,5 +1,9 @@
 # local package
 -e .
+plotly
+kaleido
+pythresh
+torchsummary
 
 # external requirements
 click
