@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import os
+
 import plotly.express as px
 import plotly.io as pio
 from plotly.subplots import make_subplots
@@ -12,7 +14,7 @@ def start_renderer(rederer='sphinx_gallery'):
     pio.renderers.default = rederer # 'jupyterlab' or 'notebook' or 'colab' or 'iframe' or 'iframe_connected' or 'sphinx_gallery'
     
     
-def plot_history(history, save_static=False, save_html=False, path='/notebooks/results/', filename='history'):
+def plot_history(history, save_static=False, save_html=False, path='./reports/figures/', filename='history'):
     start_renderer()
     
     losses1 = [x['val_loss1'] for x in history]
@@ -34,17 +36,27 @@ def plot_history(history, save_static=False, save_html=False, path='/notebooks/r
     )
     
     if save_static is True:
-        full_path = path + "history/static/" + filename + '.svg'
-        fig.write_image(full_path)
+        if not os.path.exists(path + 'history'):
+            os.makedirs(path + 'history')
+        if not os.path.exists(path + 'history/static'):
+            os.makedirs(path + 'history/static')
+  
+        full_path = path + "history/static/" + filename 
+        fig.write_image(full_path + '.svg')
         
     if save_html is True:
-        full_path = path + "history/dynamic/" + filename + '.html'
-        fig.write_html(full_path)
+        if not os.path.exists(path + 'history'):
+            os.makedirs(path + 'history')
+        if not os.path.exists(path + 'history/dynamic'):
+            os.makedirs(path + 'history/dynamic')
+  
+        full_path = path + "history/dynamic/" + filename 
+        fig.write_html(full_path + '.html')
     
     fig.show()
 
 
-def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_html=False, path='/notebooks/results/', filename='db_time'):
+def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_html=False, path='./reports/figures/', filename='db_time'):
     start_renderer()
     
     fig = make_subplots(
@@ -71,12 +83,22 @@ def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_ht
     )
     
     if save_static is True:
-        full_path = path + "db_time/static/" + filename + '.svg'
-        fig.write_image(full_path)
+        if not os.path.exists(path + 'db_time'):
+            os.makedirs(path + 'db_time')
+        if not os.path.exists(path + 'db_time/static'):
+            os.makedirs(path + 'db_time/static')
+  
+        full_path = path + "db_time/static/" + filename 
+        fig.write_image(full_path + '.svg')
         
     if save_html is True:
-        full_path = path + "db_time/dynamic/" + filename + '.html'
-        fig.write_html(full_path)
+        if not os.path.exists(path + 'db_time'):
+            os.makedirs(path + 'db_time')
+        if not os.path.exists(path + 'db_time/dynamic'):
+            os.makedirs(path + 'db_time/dynamic')
+  
+        full_path = path + "db_time/dynamic/" + filename 
+        fig.write_html(full_path + '.html')
     
     fig.show()
     
@@ -97,7 +119,7 @@ def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_ht
 #     plt.show()
 
 def plot_labels(y_pred, labels, db_time=None, th=None, title='', save_static=False, save_html=False, 
-                                                                path='/notebooks/results/', filename='labels'):
+                                                                path='./reports/figures/', filename='labels'):
     start_renderer()
     
     if db_time is None:
@@ -142,17 +164,27 @@ def plot_labels(y_pred, labels, db_time=None, th=None, title='', save_static=Fal
     )
     
     if save_static is True:
-        full_path = path + "labels/static/" + filename + '.svg'
-        fig.write_image(full_path)
+        if not os.path.exists(path + 'labels'):
+            os.makedirs(path + 'labels')
+        if not os.path.exists(path + 'labels/static'):
+            os.makedirs(path + 'labels/static')
+  
+        full_path = path + "labels/static/" + filename 
+        fig.write_image(full_path + '.svg')
         
     if save_html is True:
-        full_path = path + "labels/dynamic/" + filename + '.html'
-        fig.write_html(full_path)
+        if not os.path.exists(path + 'labels'):
+            os.makedirs(path + 'labels')
+        if not os.path.exists(path + 'labels/dynamic'):
+            os.makedirs(path + 'labels/dynamic')
+  
+        full_path = path + "labels/dynamic/" + filename 
+        fig.write_html(full_path + '.html')
 
     fig.show()
     
     
-def plot_thresholds(df, labels, columns_list=None, save_static=False, save_html=False, path='/notebooks/results/', filename='thresholds'):
+def plot_thresholds(df, labels, columns_list=None, save_static=False, save_html=False, path='./reports/figures/', filename='thresholds'):
     start_renderer()
     
     if columns_list is None:
@@ -203,12 +235,22 @@ def plot_thresholds(df, labels, columns_list=None, save_static=False, save_html=
     )
     
     if save_static is True:
-        full_path = path + "thresholds/static/" + filename + '.svg'
-        fig.write_image(full_path)
+        if not os.path.exists(path + 'thresholds'):
+            os.makedirs(path + 'thresholds')
+        if not os.path.exists(path + 'thresholds/static'):
+            os.makedirs(path + 'thresholds/static')
+  
+        full_path = path + "thresholds/static/" + filename 
+        fig.write_image(full_path + '.svg')
         
     if save_html is True:
-        full_path = path + "thresholds/dynamic/" + filename + '.html'
-        fig.write_html(full_path)
+        if not os.path.exists(path + 'thresholds'):
+            os.makedirs(path + 'thresholds')
+        if not os.path.exists(path + 'thresholds/dynamic'):
+            os.makedirs(path + 'thresholds/dynamic')
+  
+        full_path = path + "thresholds/dynamic/" + filename 
+        fig.write_html(full_path + '.html')
 
     fig.show()
 
