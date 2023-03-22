@@ -56,7 +56,17 @@ def plot_history(history, save_static=False, save_html=False, path='./reports/fi
     fig.show()
 
 
-def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_html=False, path='./reports/figures/', filename='db_time'):
+def plot_res_db_time(res, db_time, timestamps=None, th=None, title='', 
+                                                             save_static=False, save_html=False, 
+                                                             path='./reports/figures/', filename='db_time'):
+    
+    offset = len(db_time) - len(res)  # the offset is the len of the window
+    x_len = len(res)
+    if timestamps is None:
+        x = np.linspace(0, x_len-1, x_len)
+    else:
+        x = timestamps[offset:]
+    
     start_renderer()
     
     fig = make_subplots(
@@ -65,7 +75,7 @@ def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_ht
     )
 
     fig.add_trace(
-        go.Scatter(x=np.linspace(0, len(res)-1, len(res)), y=res, name='res'),
+        go.Scatter(x=x, y=res, name='res'),
         row=1, col=1
     )
     
@@ -73,7 +83,7 @@ def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_ht
         fig.add_hline(y=th, line_dash="dot", row=1, col=1, line_width=2, name='threshold')
 
     fig.add_trace(
-        go.Scatter(x=np.linspace(0, len(db_time)-1, len(db_time)), y=db_time, name='db time'),
+        go.Scatter(x=x, y=db_time[offset:], name='db time'),
         row=1, col=2
     )
     
@@ -118,19 +128,28 @@ def plot_res_db_time(res, db_time, th=None, title='', save_static=False, save_ht
 #     plt.suptitle(title)
 #     plt.show()
 
-def plot_labels(y_pred, labels, db_time=None, th=None, title='', save_static=False, save_html=False, 
-                                                                path='./reports/figures/', filename='labels'):
+def plot_labels(y_pred, labels, db_time=None, timestamps=None, th=None, title='',
+                                                                        save_static=False, save_html=False,
+                                                                        path='./reports/figures/', filename='labels'):
+    
+    x_len = len(y_pred)
+    if timestamps is None:
+        x = np.linspace(0, x_len-1, x_len)
+    else:
+        offset = len(timestamps) - len(y_pred)  # the offset is the len of the window
+        x = timestamps[offset:]
+    
     start_renderer()
     
     if db_time is None:
         # Create figure with secondary y-axis
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(
-            go.Scatter(x=np.linspace(0, len(y_pred)-1, len(y_pred)), y=y_pred, name='y_pred'),
+            go.Scatter(x=x, y=y_pred, name='y_pred'),
             secondary_y=False
         )
         fig.add_trace(
-            go.Scatter(x=np.linspace(0, len(labels)-1, len(labels)), y=labels, name='labels'),
+            go.Scatter(x=x, y=labels, name='labels'),
             secondary_y=True
         )
         # Set y-axes titles
@@ -143,15 +162,15 @@ def plot_labels(y_pred, labels, db_time=None, th=None, title='', save_static=Fal
             horizontal_spacing = 0.05
         )
         fig.add_trace(
-            go.Scatter(x=np.linspace(0, len(y_pred)-1, len(y_pred)), y=y_pred, name='y_pred'),
+            go.Scatter(x=x, y=y_pred, name='y_pred'),
             row=1, col=1
         )
         fig.add_trace(
-            go.Scatter(x=np.linspace(0, len(labels)-1, len(labels)), y=labels*y_pred, name='labels'),
+            go.Scatter(x=x, y=labels*y_pred, name='labels'),
             row=1, col=1
         )
         fig.add_trace(
-            go.Scatter(x=np.linspace(0, len(db_time)-1, len(db_time)), y=db_time, name='db time'),
+            go.Scatter(x=x, y=db_time[offset:], name='db time'),
             row=1, col=2
         )
         # Set y-axes titles
@@ -184,7 +203,17 @@ def plot_labels(y_pred, labels, db_time=None, th=None, title='', save_static=Fal
     fig.show()
     
     
-def plot_thresholds(df, labels, columns_list=None, save_static=False, save_html=False, path='./reports/figures/', filename='thresholds'):
+def plot_thresholds(df, labels, timestamps=None, columns_list=None, 
+                                                    save_static=False, save_html=False, 
+                                                    path='./reports/figures/', filename='thresholds'):
+    
+    offset = len(df) - len(labels)  # the offset is the len of the window
+    x_len = len(labels)
+    if timestamps is None:
+        x = np.linspace(0, x_len-1, x_len)
+    else:
+        x = timestamps[offset:]
+    
     start_renderer()
     
     if columns_list is None:
@@ -205,21 +234,20 @@ def plot_thresholds(df, labels, columns_list=None, save_static=False, save_html=
     i = 1
     j = 1
     
-    x = np.linspace(0, len(labels)-1, len(labels))
     for metric in df.columns.values:
         # labels
         fig.add_trace(
-            go.Scatter(x=x, y=np.max(df[metric][:len(labels)]) * labels, marker = {'color' : '#00CC96'}, opacity=.6),
+            go.Scatter(x=x, y=np.max(df[metric][offset:]) * labels, marker = {'color' : '#00CC96'}, opacity=.6),
             row=i, col=j
         )
         # metric
         fig.add_trace(
-            go.Scatter(x=x, y=df[metric][:len(labels)], marker = {'color' : '#636EFA'}),
+            go.Scatter(x=x, y=df[metric][offset:], marker = {'color' : '#636EFA'}),
             row=i, col=j
         )
         # anomalies
         fig.add_trace(
-            go.Scatter(x=x, y=df[metric][:len(labels)] * labels, marker = {'color' : '#EF553B'}),
+            go.Scatter(x=x, y=df[metric][offset:] * labels, marker = {'color' : '#EF553B'}),
             row=i, col=j
         )
         

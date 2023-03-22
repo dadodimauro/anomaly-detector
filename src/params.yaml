@@ -1,0 +1,20 @@
+PREPROCESSING_PARAMS:
+    'downsamplig_rate': 5
+    'window_size': 12
+    'normalization': 'all'
+    'metrics': 'columns_6'
+    
+TRAINING_PARAMS:
+    'batch_size': 32
+    'epochs': 3
+    'hidden_size': 10
+
+INTERVALS_PARAMS:
+    'train_start': 40320
+    'train_end': 70560
+    'test_start': 0
+    'test_end': 30240
+
+TH_ALGORITHM: 'iqr' 
+
+DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"

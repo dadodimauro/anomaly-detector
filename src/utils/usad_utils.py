@@ -59,7 +59,7 @@ def get_prediction_score(results):
     return score
 
 
-def save_model(model, path="/notebooks/checkpoints/model.pth"):
+def save_model(model, path="models/model.pth"):
     torch.save({
             'encoder': model.encoder.state_dict(),
             'decoder1': model.decoder1.state_dict(),
@@ -67,7 +67,7 @@ def save_model(model, path="/notebooks/checkpoints/model.pth"):
         }, path)
     
 
-def load_checkpoint(model, path="/notebooks/checkpoints/model.pth"):
+def load_checkpoint(model, path="models/model.pth"):
     checkpoint = torch.load(path)
 
     model.encoder.load_state_dict(checkpoint['encoder'])

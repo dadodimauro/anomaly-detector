@@ -5,6 +5,7 @@ plotly
 kaleido
 pythresh
 torchsummary
+pyod
 
 # external requirements
 # click
