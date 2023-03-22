@@ -1,0 +1,94 @@
+.
+└── anomaly-detector
+    ├── LICENSE
+    ├── Makefile
+    ├── README.md
+    ├── data
+    │   ├── processed
+    │   │   └── labels
+    │   └── raw
+    │       ├── V_GV_SYSMETRIC_INCTANCE_1.csv
+    │       └── V_GV_SYSMETRIC_INCTANCE_2.csv
+    ├── docs
+    │   ├── Makefile
+    │   ├── commands.rst
+    │   ├── conf.py
+    │   ├── getting-started.rst
+    │   ├── index.rst
+    │   └── make.bat
+    ├── models
+    │   └── model.pth
+    ├── notebooks
+    │   ├── USAD.ipynb
+    │   └── pyOD.ipynb
+    ├── paperspace-requirements.txt
+    ├── references
+    ├── reports
+    │   ├── anomalies-intervals
+    │   │   ├── anomalies-intervals.csv
+    │   │   └── anomalies-intervals.txt
+    │   └── figures
+    │       ├── db_time
+    │       │   └── static
+    │       │       └── db_time.svg
+    │       ├── history
+    │       │   └── static
+    │       │       └── history.svg
+    │       ├── labels
+    │       │   └── static
+    │       │       └── labels.svg
+    │       └── thresholds
+    │           ├── dynamic
+    │           │   └── thresholds.html
+    │           └── static
+    │               └── thresholds.svg
+    ├── requirements.txt
+    ├── setup.py
+    ├── src
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   └── __init__.cpython-39.pyc
+    │   ├── data
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   │   ├── __init__.cpython-39.pyc
+    │   │   │   ├── columns.cpython-39.pyc
+    │   │   │   └── preprocessing.cpython-39.pyc
+    │   │   ├── columns.py
+    │   │   ├── make_dataset.py
+    │   │   └── preprocessing.py
+    │   ├── features
+    │   │   ├── __init__.py
+    │   │   └── build_features.py
+    │   ├── models
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   │   ├── __init__.cpython-39.pyc
+    │   │   │   ├── usad.cpython-39.pyc
+    │   │   │   └── usad_utils.cpython-39.pyc
+    │   │   ├── usad.py
+    │   │   └── usad_utils.py
+    │   ├── params.yaml
+    │   ├── utils
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   │   ├── __init__.cpython-39.pyc
+    │   │   │   ├── params.cpython-39.pyc
+    │   │   │   ├── thresholds.cpython-39.pyc
+    │   │   │   ├── usad_utils.cpython-39.pyc
+    │   │   │   └── utils.cpython-39.pyc
+    │   │   ├── params.py
+    │   │   ├── parser.py
+    │   │   ├── thresholds.py
+    │   │   ├── usad_utils.py
+    │   │   └── utils.py
+    │   └── visualization
+    │       ├── __init__.py
+    │       ├── __pycache__
+    │       │   ├── __init__.cpython-39.pyc
+    │       │   └── plotter.cpython-39.pyc
+    │       ├── plotter.py
+    │       └── visualize.py
+    ├── test_environment.py
+    ├── tox.ini
+    └── tree-structure.txt
