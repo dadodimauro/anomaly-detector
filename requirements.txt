@@ -6,6 +6,7 @@ kaleido
 pythresh
 torchsummary
 pyod
+ydata-profiling
 
 # external requirements
 # click

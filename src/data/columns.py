@@ -207,11 +207,16 @@ def get_columns_list(columns_name='columns_2'):
         return columns_4
     elif columns_name == 'columns_5':
         return columns_5
-    elif columns_name == 'columns_6':
-        return columns_6
+    elif columns_name == 'columns_6':  # default
+        return columns_6  
     elif columns_name == 'columns_7':
         return columns_7
     else:
-        print('Error: invalid column name')
-        print('\treturning default metrics')
-        return columns_2
+        if type(columns_name) is list:
+            print('Using custom columns')
+            return columns_name
+        else:
+            print('Error: invalid column name')
+            print('\treturning default metrics')
+            
+        return columns_6

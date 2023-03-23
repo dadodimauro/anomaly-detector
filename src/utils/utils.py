@@ -1,6 +1,7 @@
-# import numpy as np
+import numpy as np
 import pandas as pd
-# import matplotlib.pyplot as plt
+from datetime import datetime
+
 import torch
 
 def get_default_device():
@@ -66,3 +67,12 @@ def save_anomalies_intervals(df, save_txt=True, save_csv=True,
         with open(full_path+'.txt', 'w') as f:
             f.write(df.to_string(header=True, index=False))
     
+
+def remove_week_with_anomalies(df, anomalies_intervals_df):
+    anomaly_weeks = set(anomalies_intervals_df['start'].dt.isocalendar().week).union(
+                                                            set(anomalies_intervals_df['end'].dt.isocalendar().week))
+    
+    clean_df = df[~df.index.isocalendar().week.isin(anomaly_weeks)]
+    dirty_df = df[df.index.isocalendar().week.isin(anomaly_weeks)]
+    return clean_df, dirty_df
+

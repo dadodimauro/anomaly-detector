@@ -99,87 +99,130 @@ def get_df(db_path, columns_name=None):
     return df
 
 
-def get_db_time(df, PREPROCESSING_PARAMS, INTERVALS_PARAMS=None):
+def get_db_time(df, PREPROCESSING_PARAMS, INTERVALS_PARAMS=None, multi=True):
     
-    if INTERVALS_PARAMS is None:
-        df_len = len(df)
-        train_start = 0
-        train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
-        test_start = int(np.floor(0.3 * df_len))
-        test_end = df_len
-    else:
-        train_start = INTERVALS_PARAMS['train_start']
-        train_end = INTERVALS_PARAMS['train_end']
-        test_start = INTERVALS_PARAMS['test_start']
-        test_end = INTERVALS_PARAMS['test_end']
-    
-    df_train = df[train_start:train_end]  # .reset_index(drop=True)
-    df_test = df[test_start:test_end]  # .reset_index(drop=True)
-    
-    downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
+    if multi is True:
+        if INTERVALS_PARAMS is None:
+            df_len = len(df)
+            train_start = 0
+            train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
+            test_start = int(np.floor(0.3 * df_len))
+            test_end = df_len
+        else:
+            train_start = INTERVALS_PARAMS['train_start']
+            train_end = INTERVALS_PARAMS['train_end']
+            test_start = INTERVALS_PARAMS['test_start']
+            test_end = INTERVALS_PARAMS['test_end']
 
-    if downsampling_rate > 0:
-        df_train = downsampling(df_train, downsampling_rate)
-        df_test = downsampling(df_test, downsampling_rate)
-    df_train = transform_in_float64(df_train)
-    df_test = transform_in_float64(df_test)
+        df_train = df[train_start:train_end]  # .reset_index(drop=True)
+        df_test = df[test_start:test_end]  # .reset_index(drop=True)
+
+        downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
+
+        if downsampling_rate > 0:
+            df_train = downsampling(df_train, downsampling_rate)
+            df_test = downsampling(df_test, downsampling_rate)
+        df_train = transform_in_float64(df_train)
+        df_test = transform_in_float64(df_test)
+
+        db_time_train = df_train['Database Time Per Sec'].reset_index(drop=True)
+        db_time_test = df_test['Database Time Per Sec'].reset_index(drop=True)
+
+        return db_time_train, db_time_test
     
-    db_time_train = df_train['Database Time Per Sec'].reset_index(drop=True)
-    db_time_test = df_test['Database Time Per Sec'].reset_index(drop=True)
-    
-    return db_time_train, db_time_test
+    else:  # if univariate no division for test and split since is always unsupervised
+        if INTERVALS_PARAMS is None:
+            start = 0
+            end = len(df)
+        else:
+            start = INTERVALS_PARAMS['start']
+            end = INTERVALS_PARAMS['end']
+
+        df = df[start:end]  
+        downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
+
+        if downsampling_rate > 0:
+            df = downsampling(df, downsampling_rate)
+            
+        df = transform_in_float64(df)
+
+        db_time = df['Database Time Per Sec'].reset_index(drop=True)
+
+        return db_time
 
 
-def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score'):
+def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score', multi=True):
     
-    if INTERVALS_PARAMS is None:
-        df_len = len(df)
-        train_start = 0
-        train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
-        test_start = int(np.floor(0.3 * df_len))
-        test_end = df_len
-    else:
-        train_start = INTERVALS_PARAMS['train_start']
-        train_end = INTERVALS_PARAMS['train_end']
-        test_start = INTERVALS_PARAMS['test_start']
-        test_end = INTERVALS_PARAMS['test_end']
+    if multi is True:
+        if INTERVALS_PARAMS is None:
+            df_len = len(df)
+            train_start = 0
+            train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
+            test_start = int(np.floor(0.3 * df_len))
+            test_end = df_len
+        else:
+            train_start = INTERVALS_PARAMS['train_start']
+            train_end = INTERVALS_PARAMS['train_end']
+            test_start = INTERVALS_PARAMS['test_start']
+            test_end = INTERVALS_PARAMS['test_end']
+
+        df_train = df[train_start:train_end]  # .reset_index(drop=True)
+        df_test = df[test_start:test_end]  # .reset_index(drop=True)
+
+        downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
+
+        # df = df.drop(['BEGIN_TIME'], axis = 1)
+
+        # train dataset 
+        # df_train = transform_in_float64(df_train)
+        if downsampling_rate > 0:
+            df_train = downsampling(df_train, downsampling_rate)
+        train_timestamps = df_train.index
+        # df_train = df_train.drop(['BEGIN_TIME'], axis = 1).reset_index(drop=True)
+        # df_train = transform_in_float64(df_train).reset_index(drop=True)
+        df_train = df_train.reset_index(drop=True)
+        if scaler is not None:
+            df_train = normalize_data(df_train, scaler=scaler)
+
+        # test dataset
+        # df_test = transform_in_float64(df_test)
+        if downsampling_rate > 0:
+            df_test = downsampling(df_test, downsampling_rate)
+        test_timestamps = df_test.index
+        # df_test = df_test.drop(['BEGIN_TIME'], axis = 1).reset_index(drop=True)
+        # df_test = transform_in_float64(df_test).reset_index(drop=True)
+        df_test = df_test.reset_index(drop=True)
+        if scaler is not None:                    
+            df_test = normalize_data(df_test, scaler=scaler)
+
+        # create windows
+        window_size = PREPROCESSING_PARAMS['window_size']
+
+        windows_train = create_windows(df_train, window_size)
+        windows_test = create_windows(df_test, window_size)
+
+        return df_train, df_test, windows_train, windows_test, train_timestamps, test_timestamps
     
-    df_train = df[train_start:train_end]  # .reset_index(drop=True)
-    df_test = df[test_start:test_end]  # .reset_index(drop=True)
-    
-    downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
-    
-    # df = df.drop(['BEGIN_TIME'], axis = 1)
-    
-    # train dataset 
-    # df_train = transform_in_float64(df_train)
-    if downsampling_rate > 0:
-        df_train = downsampling(df_train, downsampling_rate)
-    train_timestamps = df_train.index
-    # df_train = df_train.drop(['BEGIN_TIME'], axis = 1).reset_index(drop=True)
-    # df_train = transform_in_float64(df_train).reset_index(drop=True)
-    df_train = df_train.reset_index(drop=True)
-    if scaler is not None:
-        df_train = normalize_data(df_train, scaler=scaler)
-    
-    # test dataset
-    # df_test = transform_in_float64(df_test)
-    if downsampling_rate > 0:
-        df_test = downsampling(df_test, downsampling_rate)
-    test_timestamps = df_test.index
-    # df_test = df_test.drop(['BEGIN_TIME'], axis = 1).reset_index(drop=True)
-    # df_test = transform_in_float64(df_test).reset_index(drop=True)
-    df_test = df_test.reset_index(drop=True)
-    if scaler is not None:                    
-        df_test = normalize_data(df_test, scaler=scaler)
-    
-    # create windows
-    window_size = PREPROCESSING_PARAMS['window_size']
-    
-    windows_train = create_windows(df_train, window_size)
-    windows_test = create_windows(df_test, window_size)
-    
-    return df_train, df_test, windows_train, windows_test, train_timestamps, test_timestamps
+    else: 
+        if INTERVALS_PARAMS is None:
+            start = 0
+            end =  len(df)
+        else:
+            start = INTERVALS_PARAMS['start']
+            end = INTERVALS_PARAMS['end']
+
+        df = df[start:end]  # .reset_index(drop=True)
+
+        downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
+
+        if downsampling_rate > 0:
+            df = downsampling(df, downsampling_rate)
+        timestamps = df.index
+        df = df.reset_index(drop=True)
+        if scaler is not None:
+            df = normalize_data(df, scaler=scaler)
+
+        return df, timestamps
 
 
 def get_dataloaders(windows_train, windows_test, batch_size, w_size, z_size):
