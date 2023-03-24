@@ -1,20 +1,16 @@
 .. anomaly-detector documentation master file, created by
-   sphinx-quickstart.
+   sphinx-quickstart on Fri Mar 24 13:46:38 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-anomaly-detector documentation!
-==============================================
-
-Contents:
+Welcome to anomaly-detector's documentation!
+============================================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
-   getting-started
-   commands
-
-
+    modules
 
 Indices and tables
 ==================
