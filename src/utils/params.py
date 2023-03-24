@@ -1,6 +1,29 @@
 import yaml
 
+# TODO: retreive the parameeter 'MULTI' from commad line and/or parameter \
+#       instead of from YAML file
+# TODO: modify the YAML adding the field 'ALGORITHM' also for the multivariate case
 def get_params(verbose=True):
+    """
+    Function used to retreive and store in dictionaries all the experiment parameters
+    saved in the configuration YAML file
+
+    Parameters
+    ----------
+    verbose : bool
+        print the parameter or no
+
+    Returns
+    -------
+    (dict, ..., str)
+        - ALGORITHM: the algorith used in the univariate case or for dividing train and test set
+        - PREPROCESSING_PARAMS: preprocessing parameters
+        - TRAINING_PARAMS: training parameters
+        - INTERVALS_PARAMS: intervals parameters
+        - TH_ALGORITHM: threshold algorithm
+        - df_path: path of the input data
+    """
+
     with open("src/params.yaml", "r") as stream:
         try:
             params = yaml.safe_load(stream)
@@ -36,5 +59,14 @@ def get_params(verbose=True):
     
     
 def print_params(params):
+    """
+    print the parameters
+
+    Parameters
+    ----------
+    params : dict
+        dictionary of parameters to be printed
+    """
+
     for k, v in params.items():
         print(f'{k}: {v}')

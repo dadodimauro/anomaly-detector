@@ -4,6 +4,8 @@ import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 
+# TODO: understand what this script does and remove if not needed
+
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))

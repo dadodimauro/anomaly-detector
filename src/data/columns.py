@@ -70,40 +70,40 @@ columns_2 = [
     'Physical Reads Per Txn',
     'Physical Writes Per Sec',
     'Physical Writes Per Txn',
-    
+
     'Hard Parse Count Per Sec',
     'Hard Parse Count Per Txn',
-    
+
     # 'Executions Per Sec',
     # 'Executions Per Txn',
-    
+
     'Long Table Scans Per Sec',
     'Long Table Scans Per Txn',
     'Total Table Scans Per Sec',
     'Total Table Scans Per Txn',
-    
+
     'Library Cache Hit Ratio',
     'Library Cache Miss Ratio',
-    
+
     'Redo Generated Per Sec',
     'Redo Generated Per Txn',
     'Redo Writes Per Sec',
     'Redo Writes Per Txn',
-    
+
     'Cursor Cache Hit Ratio',
-    
+
     'I/O Megabytes per Second',
     # 'I/O Requests per Second',  # strange behaviour difficult to predict
-    
+
     'Process Limit %',
-    
+
     'CPU Usage Per Sec',
     'CPU Usage Per Txn',
     'Host CPU Utilization (%)',
     'Background CPU Usage Per Sec',
     'Database Wait Time Ratio',
     'Database CPU Time Ratio',
-    
+
     'Database Time Per Sec'
 ]
 
@@ -112,7 +112,7 @@ columns_3 = [
     'SQL Service Response Time',
     'Response Time Per Txn',
     'Database Time Per Sec',
-     # 'Workload Volume Metrics',  # not existing
+    # 'Workload Volume Metrics',  # not existing
     'User Transaction Per Sec',
     'Physical Reads Per Sec',
     'Physical Writes Per Sec',
@@ -125,7 +125,7 @@ columns_3 = [
     'Total Parse Count Per Txn',
     'Enqueue Requests Per Txn',
     'DB Block Changes Per Txn',
-    
+
     'Database Time Per Sec'
 ]
 
@@ -161,9 +161,9 @@ columns_4 = [
     'Response Time Per Txn',
     'Executions Per Txn',
     'Executions Per Sec',
-    
+
     'Database Time Per Sec'
-] 
+]
 
 columns_5 = set(columns_3 + columns_4)
 
@@ -197,6 +197,24 @@ columns_7 = [
 
 
 def get_columns_list(columns_name='columns_2'):
+    """
+    Function that returns the specified set of metrics
+
+    Both a pre-configured set of columns can be retrieved or a custom one
+    if a list of columns if specified
+
+    Parameters
+    ----------
+    columns_name : str or :obj:`list` of :obj:`str`
+        two options:
+            - a string containing the name of the pre-configured set of metrics
+            - a list containing the name of the desired metrics
+    Returns
+    -------
+    :obj:`list` of :obj:`str`
+        list of metrics of interest
+    """
+
     if columns_name == 'columns_1':
         return columns_1
     elif columns_name == 'columns_2':
@@ -208,7 +226,7 @@ def get_columns_list(columns_name='columns_2'):
     elif columns_name == 'columns_5':
         return columns_5
     elif columns_name == 'columns_6':  # default
-        return columns_6  
+        return columns_6
     elif columns_name == 'columns_7':
         return columns_7
     else:
@@ -218,5 +236,5 @@ def get_columns_list(columns_name='columns_2'):
         else:
             print('Error: invalid column name')
             print('\treturning default metrics')
-            
+
         return columns_6

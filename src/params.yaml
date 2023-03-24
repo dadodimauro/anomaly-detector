@@ -1,41 +1,43 @@
-MULTI: False  # TO-DO: change and use parser instead
+# TODO: change and use parser instead
+MULTI: False
 
 MULTIVARIATE:
-    PREPROCESSING_PARAMS:
-        'downsamplig_rate': 5
-        'window_size': 12
-        'normalization': 'all'
-        'metrics': 'columns_6'  # accept a list of columns [metric1, metric2, ...]
+  # TODO: add field 'ALGORITHM'
+  PREPROCESSING_PARAMS:
+    'downsamplig_rate': 5
+    'window_size': 12
+    'normalization': 'all'
+    'metrics': 'columns_6'  # accept a list of columns [metric1, metric2, ...]
 
-    TRAINING_PARAMS:
-        'batch_size': 32
-        'epochs': 3
-        'hidden_size': 10
+  TRAINING_PARAMS:
+    'batch_size': 32
+    'epochs': 3
+    'hidden_size': 10
 
-    INTERVALS_PARAMS:
-        'train_start': 40320
-        'train_end': 70560
-        'test_start': 0
-        'test_end': 30240
-        
-    TH_ALGORITHM: 'iqr' 
-    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
-    
+  INTERVALS_PARAMS:
+    'train_start': 40320
+    'train_end': 70560
+    'test_start': 0
+    'test_end': 30240
+
+  TH_ALGORITHM: 'iqr'
+  DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+
 UNIVARIATE:
-    ALGORITHM: 'knn'
+  ALGORITHM: 'knn'
 
-    PREPROCESSING_PARAMS:
-        'downsamplig_rate': 5
-        'normalization': null  # z-score, min-max, all, null
-        'metric': ['Database Time Per Sec']
+  PREPROCESSING_PARAMS:
+    'downsamplig_rate': 5
+    'normalization': null  # z-score, min-max, all, null
+    'metric': [ 'Database Time Per Sec' ]
 
-    TRAINING_PARAMS:
-        'contamination': 0.001
+  TRAINING_PARAMS:
+    'contamination': 0.001
 
-    INTERVALS_PARAMS:
-        'start': 0
-        'end': 30240
+  INTERVALS_PARAMS:
+    'start': 0
+    'end': 30240
 
-    TH_ALGORITHM: 'iqr' 
-    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+  TH_ALGORITHM: 'iqr'
+  DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
     

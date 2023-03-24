@@ -5,7 +5,15 @@ from datetime import datetime
 import torch
 
 def get_default_device():
-    """Pick GPU if available, else CPU"""
+    """
+    Pick GPU if available, else CPU
+
+    Returns
+    -------
+    torch.device
+        torch device
+    """
+
     if torch.cuda.is_available():
         return torch.device('cuda')
     else:
@@ -13,13 +21,40 @@ def get_default_device():
     
 
 def to_device(data, device):
-    """Move tensor(s) to chosen device"""
+    """
+    Move tensor(s) to chosen device
+
+    Parameters
+    ----------
+    data : torch.tensor
+    device : torch.device
+
+    Returns
+    -------
+    torch.tensor
+        input tensor moved to the chosen device
+    """
+
     if isinstance(data, (list,tuple)):
         return [to_device(x, device) for x in data]
     return data.to(device, non_blocking=True)
 
     
 def generate_anomalies_intervals(labels, timestamps):
+    """
+    Generate a DataFrame containing the anomalies intervals
+
+    Parameters
+    ----------
+    labels : np.array
+    timestamps : pandas.DatetimeIndex
+
+    Returns
+    -------
+    pandas.Dataframe
+        DataFrame containing the anomalies intervals
+    """
+
     offset = len(timestamps) - len(labels)
     timestamps = timestamps[offset:]  # the offset is the len of the window
 
@@ -57,7 +92,20 @@ def generate_anomalies_intervals(labels, timestamps):
 
 def save_anomalies_intervals(df, save_txt=True, save_csv=True,
                                                 path='./reports/anomalies-intervals/', filename='anomalies-intervals'):
-    
+    """
+    Save a DataFrame containing the anomalies intervals to a file (.txt and/or .csv)
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    save_txt : bool
+    save_csv : bool
+    path : str
+        path where to store the intervals
+    filename : str
+        name of the file
+    """
+
     full_path = path + filename
     
     if save_csv is True:
@@ -69,6 +117,21 @@ def save_anomalies_intervals(df, save_txt=True, save_csv=True,
     
 
 def remove_week_with_anomalies(df, anomalies_intervals_df):
+    """
+    Remove the weeks containing anomalies from a DataFrame
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    anomalies_intervals_df : pandas.DataFrame
+        DataFrame containing the anomalies intervals
+
+    Returns
+    -------
+    (pandas.DataFrame, pandas.DataFrame)
+        returns 2 DataFrame, one with the 'clean' and one with the 'dirty' data
+    """
+
     anomaly_weeks = set(anomalies_intervals_df['start'].dt.isocalendar().week).union(
                                                             set(anomalies_intervals_df['end'].dt.isocalendar().week))
     
