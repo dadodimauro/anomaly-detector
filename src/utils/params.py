@@ -21,6 +21,7 @@ def get_params(verbose=True):
         - TRAINING_PARAMS: training parameters
         - INTERVALS_PARAMS: intervals parameters
         - TH_ALGORITHM: threshold algorithm
+        - PLOT_PARAMS: plotting parameters
         - df_path: path of the input data
     """
 
@@ -36,6 +37,7 @@ def get_params(verbose=True):
         TRAINING_PARAMS = params['TRAINING_PARAMS']
         INTERVALS_PARAMS = params['INTERVALS_PARAMS']
         TH_ALGORITHM = params['TH_ALGORITHM']
+        PLOT_PARAMS = params['PLOT_PARAMS']
         df_path = params['DF_PATH']
         
         if verbose is True:
@@ -50,12 +52,13 @@ def get_params(verbose=True):
         TRAINING_PARAMS = params['TRAINING_PARAMS']
         INTERVALS_PARAMS = params['INTERVALS_PARAMS']
         TH_ALGORITHM = params['TH_ALGORITHM']
+        PLOT_PARAMS = params['PLOT_PARAMS']
         df_path = params['DF_PATH']
         
         if verbose is True:
             print_params(params)
     
-        return ALGORITHM, PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, df_path
+        return ALGORITHM, PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, df_path
     
     
 def print_params(params):

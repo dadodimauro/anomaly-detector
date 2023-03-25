@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 import torch
 import torch.utils.data as data_utils
 from sklearn import preprocessing
@@ -157,13 +158,13 @@ def create_windows(df, window_size):
     return windows_df
 
 
-def get_df(db_path, columns_name=None):
+def get_df(path, columns_name=None):
     """
     Function to retrieve data from a csv file
 
     Parameters
     ----------
-    db_path : str
+    path : str
         path of the csv file
     columns_name : :obj:`list` of :obj:`str`
         the metrics to retrieve
@@ -176,12 +177,12 @@ def get_df(db_path, columns_name=None):
     # retrieve columns used
     if columns_name is None:
         print('Warning: columns name not specified, using all metrics')
-        df = pd.read_csv(db_path)
+        df = pd.read_csv(path)
         # df = df.drop(['BEGIN_TIME'], axis = 1)
     else:
         columns = get_columns_list(columns_name)
         columns = ['BEGIN_TIME'] + columns
-        df = pd.read_csv(db_path, usecols=columns)
+        df = pd.read_csv(path, usecols=columns)
 
     df['BEGIN_TIME'] = pd.to_datetime(df['BEGIN_TIME'])
     df = df.set_index('BEGIN_TIME')
@@ -407,3 +408,30 @@ def get_dataloaders(windows_train, windows_test, batch_size, w_size, z_size):
     ), batch_size=batch_size, shuffle=False, num_workers=0)
 
     return train_loader, val_loader, test_loader
+
+
+def save_df(df, path, name):
+    """
+    Function to save a DataFrame in a .csv file
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    path : str
+        path of the csv file
+    name : str
+        name of the file
+    Returns
+    -------
+    pandas.DataFrame
+        a DataFrame containing data of the specified metrics
+    """
+    
+    if not os.path.exists(path):
+        os.makedirs(path)
+    if '.csv' in name:
+        full_path = path + name
+    else:
+        full_path = path + name + '.csv'
+        
+    df.to_csv(full_path, index=False)

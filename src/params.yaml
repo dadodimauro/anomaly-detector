@@ -13,6 +13,8 @@ MULTIVARIATE:
     'batch_size': 32
     'epochs': 3
     'hidden_size': 10
+    'alpha': 0.5
+    'beta': 0.5
 
   INTERVALS_PARAMS:
     'train_start': 40320
@@ -22,6 +24,11 @@ MULTIVARIATE:
 
   TH_ALGORITHM: 'iqr'
   DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+  
+  PLOT_PARAMS:
+    'history_static': True
+    'history_html': False
+      
 
 UNIVARIATE:
   ALGORITHM: 'knn'
@@ -40,4 +47,10 @@ UNIVARIATE:
 
   TH_ALGORITHM: 'iqr'
   DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+  
+  PLOT_PARAMS:
+    'db_time_static': True
+    'db_time_html': False
+    'labels_static': True
+    'labels_html': False
     
