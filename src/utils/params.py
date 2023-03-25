@@ -43,7 +43,7 @@ def get_params(verbose=True):
         if verbose is True:
             print_params(params)
         
-        return PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, df_path
+        return PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, df_path
     
     else:
         params = params['UNIVARIATE']

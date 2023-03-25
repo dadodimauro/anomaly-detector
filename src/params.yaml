@@ -1,5 +1,6 @@
 # TODO: change and use parser instead
-MULTI: False
+# TODO: create 2 files, one for multi and one for univariate case
+MULTI: True
 
 MULTIVARIATE:
   # TODO: add field 'ALGORITHM'
@@ -8,6 +9,7 @@ MULTIVARIATE:
     'window_size': 12
     'normalization': 'all'
     'metrics': 'columns_6'  # accept a list of columns [metric1, metric2, ...]
+    'multi_file' : False  # if data is already divided in Train and Test data
 
   TRAINING_PARAMS:
     'batch_size': 32
@@ -28,7 +30,12 @@ MULTIVARIATE:
   PLOT_PARAMS:
     'history_static': True
     'history_html': False
-      
+    'db_time_static': True
+    'db_time_html': False
+    'labels_static': True
+    'labels_html': False
+    'thresholds_static' : True
+    'thresholds_html' : True
 
 UNIVARIATE:
   ALGORITHM: 'knn'

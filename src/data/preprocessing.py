@@ -267,7 +267,8 @@ def get_db_time(df, PREPROCESSING_PARAMS, INTERVALS_PARAMS=None, multi=True):
 
 # TODO: add function to retreive train and test from 'filtered' folder instead of from INTERVALS_PARAMS
 # TODO: change it to return always the same number of values (maybe set None) to make it safer
-def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score', multi=True):
+def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score', 
+                                       multi=True, single_file=True, train_df=None, test_df=None):
     """
     function that handles the data preprocessing
 
@@ -285,6 +286,13 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
         ATTENTION:
             - 4 df and 2 DatetimeIndex are returned if set to True (train and test)
             - 1 df and 1 DatetimeIndex are returned if set to False
+    single_file : boolin 
+        True if data is in a single df, False if is already divided in Train and Test
+    train_df : pandas.DataFrame
+        needed only in the case where data is already divided in Train and Test data
+    test_df : pandas.DataFrame
+        needed only in the case where data is already divided in Train and Test data
+        
     Returns
     -------
     (pandas.DataFrame, ..., pandas.DatetimeIndex)
@@ -298,20 +306,26 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
     """
 
     if multi is True:
-        if INTERVALS_PARAMS is None:
-            df_len = len(df)
-            train_start = 0
-            train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
-            test_start = int(np.floor(0.3 * df_len))
-            test_end = df_len
-        else:
-            train_start = INTERVALS_PARAMS['train_start']
-            train_end = INTERVALS_PARAMS['train_end']
-            test_start = INTERVALS_PARAMS['test_start']
-            test_end = INTERVALS_PARAMS['test_end']
+        if single_file is True:
+            if INTERVALS_PARAMS is None:
+                df_len = len(df)
+                train_start = 0
+                train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
+                test_start = int(np.floor(0.3 * df_len))
+                test_end = df_len
+            else:
+                train_start = INTERVALS_PARAMS['train_start']
+                train_end = INTERVALS_PARAMS['train_end']
+                test_start = INTERVALS_PARAMS['test_start']
+                test_end = INTERVALS_PARAMS['test_end']
 
-        df_train = df[train_start:train_end]  # .reset_index(drop=True)
-        df_test = df[test_start:test_end]  # .reset_index(drop=True)
+            df_train = df[train_start:train_end]  # .reset_index(drop=True)
+            df_test = df[test_start:test_end]  # .reset_index(drop=True)
+        
+        else:  # single_file is False
+            if df_train is None or df_test is None:
+                print('Error: missing df_train or df_test')
+                return None, None, None, None
 
         downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
 
@@ -347,7 +361,7 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
 
         return df_train, df_test, windows_train, windows_test, train_timestamps, test_timestamps
 
-    else:
+    elif multi is False and single_file is True:
         if INTERVALS_PARAMS is None:
             start = 0
             end = len(df)
@@ -367,6 +381,11 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
             df = normalize_data(df, scaler=scaler)
 
         return df, timestamps
+        
+    # elif multi is False and single_file is False:  # Not supported 
+    else:
+        print('Unknown error in the preprocessing function')
+        return
 
 
 # TODO: check if z_size is needed, if not remove it
