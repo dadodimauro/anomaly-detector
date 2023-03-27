@@ -268,7 +268,7 @@ def get_db_time(df, PREPROCESSING_PARAMS, INTERVALS_PARAMS=None, multi=True):
 # TODO: add function to retreive train and test from 'filtered' folder instead of from INTERVALS_PARAMS
 # TODO: change it to return always the same number of values (maybe set None) to make it safer
 def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score', 
-                                       multi=True, single_file=True, train_df=None, test_df=None):
+                                       multi=True, single_file=True, df_train=None, df_test=None):
     """
     function that handles the data preprocessing
 

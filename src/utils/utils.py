@@ -136,6 +136,14 @@ def remove_week_with_anomalies(df, anomalies_intervals_df):
                                                             set(anomalies_intervals_df['end'].dt.isocalendar().week))
     
     clean_df = df[~df.index.isocalendar().week.isin(anomaly_weeks)]
+    index = clean_df.index
+    clean_df = clean_df.reset_index()
+    clean_df['BEGIN_TIME'] = index
+    
     dirty_df = df[df.index.isocalendar().week.isin(anomaly_weeks)]
+    index = dirty_df.index
+    dirty_df = dirty_df.reset_index()
+    dirty_df['BEGIN_TIME'] = index
+    
     return clean_df, dirty_df
 

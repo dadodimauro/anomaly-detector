@@ -38,12 +38,12 @@ def get_params(verbose=True):
         INTERVALS_PARAMS = params['INTERVALS_PARAMS']
         TH_ALGORITHM = params['TH_ALGORITHM']
         PLOT_PARAMS = params['PLOT_PARAMS']
-        df_path = params['DF_PATH']
+        PATH_PARAMS = params['PATH_PARAMS']
         
         if verbose is True:
             print_params(params)
         
-        return PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, df_path
+        return PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, PATH_PARAMS
     
     else:
         params = params['UNIVARIATE']
@@ -53,12 +53,12 @@ def get_params(verbose=True):
         INTERVALS_PARAMS = params['INTERVALS_PARAMS']
         TH_ALGORITHM = params['TH_ALGORITHM']
         PLOT_PARAMS = params['PLOT_PARAMS']
-        df_path = params['DF_PATH']
+        PATH_PARAMS = params['PATH_PARAMS']
         
         if verbose is True:
             print_params(params)
     
-        return ALGORITHM, PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, df_path
+        return ALGORITHM, PREPROCESSING_PARAMS, TRAINING_PARAMS, INTERVALS_PARAMS, TH_ALGORITHM, PLOT_PARAMS, PATH_PARAMS
     
     
 def print_params(params):

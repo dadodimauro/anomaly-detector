@@ -6,15 +6,15 @@ MULTIVARIATE:
   # TODO: add field 'ALGORITHM'
   PREPROCESSING_PARAMS:
     'downsamplig_rate': 5
-    'window_size': 12
+    'window_size': 12  # 12
     'normalization': 'all'
     'metrics': 'columns_6'  # accept a list of columns [metric1, metric2, ...]
-    'multi_file' : False  # if data is already divided in Train and Test data
+    'single_file' : True  # if data is already divided in Train and Test data
 
   TRAINING_PARAMS:
-    'batch_size': 32
-    'epochs': 3
-    'hidden_size': 10
+    'batch_size': 32  # 32
+    'epochs': 100
+    'hidden_size': 10  # 8, 10, 12, 14
     'alpha': 0.5
     'beta': 0.5
 
@@ -25,7 +25,11 @@ MULTIVARIATE:
     'test_end': 30240
 
   TH_ALGORITHM: 'iqr'
-  DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+  
+  PATH_PARAMS:
+    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+    DF_TRAIN_PATH: "/notebooks/anomaly-detector/data/processed/filtered/clean_df.csv"
+    DF_TEST_PATH: "/notebooks/anomaly-detector/data/processed/filtered/dirty_df.csv"
   
   PLOT_PARAMS:
     'history_static': True
@@ -52,8 +56,12 @@ UNIVARIATE:
     'start': 0
     'end': 30240
 
-  TH_ALGORITHM: 'iqr'
-  DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+  TH_ALGORITHM: 'yj'  # clust
+  
+  PATH_PARAMS:
+    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+    DF_TRAIN_PATH: "/notebooks/anomaly-detector/data/processed/filtered/clean_df.csv"
+    DF_TEST_PATH: "/notebooks/anomaly-detector/data/processed/filtered/dirty_df.csv"
   
   PLOT_PARAMS:
     'db_time_static': True

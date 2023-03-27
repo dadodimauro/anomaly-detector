@@ -29,7 +29,8 @@ def evaluate(model, device, val_loader, n):
     return model.validation_epoch_end(outputs)
 
 
-def training(epochs, model, device, train_loader, val_loader, opt_func=torch.optim.Adam):
+# TODO: add learning rate
+def training(epochs, model, device, train_loader, val_loader, lr=0.001, weight_decay=0, opt_func=torch.optim.Adam):
     """
     Train the USAD model
 
@@ -54,8 +55,8 @@ def training(epochs, model, device, train_loader, val_loader, opt_func=torch.opt
     """
 
     history = []
-    optimizer1 = opt_func(list(model.encoder.parameters()) + list(model.decoder1.parameters()))
-    optimizer2 = opt_func(list(model.encoder.parameters()) + list(model.decoder2.parameters()))
+    optimizer1 = opt_func(list(model.encoder.parameters()) + list(model.decoder1.parameters()), lr=lr, weight_decay=weight_decay)
+    optimizer2 = opt_func(list(model.encoder.parameters()) + list(model.decoder2.parameters()), lr=lr, weight_decay=weight_decay)
     for epoch in range(epochs):
         for [batch] in train_loader:
             batch = to_device(batch, device)

@@ -6,13 +6,16 @@ from src.utils.utils import *
 
 device = get_default_device()
 
-
+# TODO: try to use TrandAD configuration 
 class Encoder(nn.Module):
     def __init__(self, in_size, latent_size):
         super().__init__()
         self.linear1 = nn.Linear(in_size, int(in_size / 2))
         self.linear2 = nn.Linear(int(in_size / 2), int(in_size / 4))
         self.linear3 = nn.Linear(int(in_size / 4), latent_size)
+        # self.linear1 = nn.Linear(in_size, 16)
+        # self.linear2 = nn.Linear(16, 16)
+        # self.linear3 = nn.Linear(16, 8)
         self.relu = nn.ReLU(True)
 
     def forward(self, w):
@@ -31,6 +34,9 @@ class Decoder(nn.Module):
         self.linear1 = nn.Linear(latent_size, int(out_size / 4))
         self.linear2 = nn.Linear(int(out_size / 4), int(out_size / 2))
         self.linear3 = nn.Linear(int(out_size / 2), out_size)
+        # self.linear1 = nn.Linear(8, 16)
+        # self.linear2 = nn.Linear(16, 16)
+        # self.linear3 = nn.Linear(16, out_size)
         self.relu = nn.ReLU(True)
         self.sigmoid = nn.Sigmoid()
 
