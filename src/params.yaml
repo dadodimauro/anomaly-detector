@@ -1,5 +1,6 @@
 # TODO: change and use parser instead
 # TODO: create 2 files, one for multi and one for univariate case
+
 MULTI: True
 
 MULTIVARIATE:

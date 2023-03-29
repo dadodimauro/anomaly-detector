@@ -9,6 +9,8 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
+from src.utils import params
+
 
 def start_renderer(rederer='sphinx_gallery'):
     pio.renderers.default = rederer # 'jupyterlab' or 'notebook' or 'colab' or 'iframe' or 'iframe_connected' or 'sphinx_gallery'
@@ -53,7 +55,8 @@ def plot_history(history, save_static=False, save_html=False, path='./reports/fi
         full_path = path + "history/dynamic/" + filename 
         fig.write_html(full_path + '.html')
     
-    fig.show()
+    if params.show_plots is True:
+        fig.show()
 
 
 def plot_res_db_time(res, db_time, timestamps=None, th=None, title='', 
@@ -110,7 +113,8 @@ def plot_res_db_time(res, db_time, timestamps=None, th=None, title='',
         full_path = path + "db_time/dynamic/" + filename 
         fig.write_html(full_path + '.html')
     
-    fig.show()
+    if params.show_plots is True:
+        fig.show()
     
     
 # USING PYPLOT
@@ -200,7 +204,8 @@ def plot_labels(y_pred, labels, db_time=None, timestamps=None, th=None, title=''
         full_path = path + "labels/dynamic/" + filename 
         fig.write_html(full_path + '.html')
 
-    fig.show()
+    if params.show_plots is True:
+        fig.show()
     
     
 def plot_thresholds(df, labels, timestamps=None, columns_list=None, 
@@ -280,7 +285,8 @@ def plot_thresholds(df, labels, timestamps=None, columns_list=None,
         full_path = path + "thresholds/dynamic/" + filename 
         fig.write_html(full_path + '.html')
 
-    fig.show()
+    if params.show_plots is True:
+        fig.show()
 
 
 

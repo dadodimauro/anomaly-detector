@@ -67,13 +67,13 @@ class Univariate_ad():
             print('using default algorithm (KNN)')
         
         if self.ALGORITHM == 'lof':
-            clf = LOF(contamination=TRAINING_PARAMS['contamination'])
+            clf = LOF(contamination=self.TRAINING_PARAMS['contamination'])
         elif self.ALGORITHM == 'iforest':
-            clf = IForest(contamination=TRAINING_PARAMS['contamination'])
+            clf = IForest(contamination=self.TRAINING_PARAMS['contamination'])
         elif self.ALGORITHM == 'ecod':
-            clf = ECOD(contamination=TRAINING_PARAMS['contamination'])
+            clf = ECOD(contamination=self.TRAINING_PARAMS['contamination'])
         else:
-            clf = KNN(contamination=TRAINING_PARAMS['contamination'])
+            clf = KNN(contamination=self.TRAINING_PARAMS['contamination'])
             
         clf.fit(df, y=None)
         y_pred = clf.decision_scores_
@@ -93,17 +93,15 @@ class Univariate_ad():
         
         if plot is True:
             plotter.plot_res_db_time(y_pred, db_time, timestamps=timestamps, 
-                             save_static=PLOT_PARAMS['db_time_static'], save_html=PLOT_PARAMS['db_time_html']) 
+                             save_static=self.PLOT_PARAMS['db_time_static'], save_html=self.PLOT_PARAMS['db_time_html']) 
             plotter.plot_labels(y_pred, self.labels_, timestamps=timestamps,
-                                    save_static=PLOT_PARAMS['labels_static'], save_html=PLOT_PARAMS['labels_html'])
+                                    save_static=self.PLOT_PARAMS['labels_static'], save_html=self.PLOT_PARAMS['labels_html'])
             
-    def remove_anomalies(self):
+    def remove_anomalies(self, path='./data/processed/filtered/', clean_name='clean_df.csv', dirty_name='dirty_df.csv'):
         if self.anomalies_intervals_ is None:
             self.fit_predict()
         
         df = preprocessing.get_df(self.df_path, columns_name=None)
         clean_df, dirty_df = utils.remove_week_with_anomalies(df, self.anomalies_intervals_)
-        preprocessing.save_df(clean_df, path='./data/processed/filtered/', name='clean_df.csv')
-        preprocessing.save_df(dirty_df, path='./data/processed/filtered/', name='dirty_df.csv')
-        
-        
+        preprocessing.save_df(clean_df, path=path, name=clean_name)
+        preprocessing.save_df(dirty_df, path=path, name=dirty_name)
