@@ -81,7 +81,7 @@ def get_params(verbose=True):
         print(f"\tinserted parameter: <{args.type}>, choose between ['univariate', 'multivariate']")
     
 
-def get_params_jupyter(verbose=True):
+def get_params_jupyter(verbose=True, MULTI=None):
     """
     Function used to retreive and store in dictionaries all the experiment parameters
     saved in the configuration YAML file
@@ -111,8 +111,9 @@ def get_params_jupyter(verbose=True):
             
     global show_plots
     show_plots = True
-            
-    MULTI = params['MULTI']
+           
+    if MULTI is None:
+        MULTI = params['MULTI']
     
     if MULTI is True:  # multivatiate
         params = params['MULTIVARIATE']

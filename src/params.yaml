@@ -1,7 +1,7 @@
 # TODO: change and use parser instead
 # TODO: create 2 files, one for multi and one for univariate case
 
-MULTI: True
+MULTI: False
 
 MULTIVARIATE:
   # TODO: add field 'ALGORITHM'
@@ -69,4 +69,5 @@ UNIVARIATE:
     'db_time_html': False
     'labels_static': True
     'labels_html': False
-    
+    'thresholds_static' : True
+    'thresholds_html' : True
