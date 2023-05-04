@@ -1,0 +1,75 @@
+# TODO: change and use parser instead
+# TODO: create 2 files, one for multi and one for univariate case
+
+MULTI: False
+
+MULTIVARIATE:
+  # TODO: add field 'ALGORITHM'
+  PREPROCESSING_PARAMS:
+    'downsamplig_rate': 5
+    'window_size': 12  # 12
+    'normalization': 'min-max'
+    'metrics': 'columns_1'  # accept a list of columns [metric1, metric2, ...]
+    'single_file' : True  # if data is already divided in Train and Test data
+
+  TRAINING_PARAMS:
+    'batch_size': 32  # 32
+    'epochs': 100
+    'hidden_size': 10  # 8, 10, 12, 14
+    'alpha': 0.5
+    'beta': 0.5
+
+  INTERVALS_PARAMS:
+    'train_start': 36945  # 40320
+    'train_end': 67047  # 70560
+    'test_start': 67047  # 27004
+    'test_end': 78503  # 36945
+    'th_start': 27004  
+    'th_end': 36945  
+
+  TH_ALGORITHM: 'iqr'
+  
+  PATH_PARAMS:
+    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+    DF_TRAIN_PATH: "/notebooks/anomaly-detector/data/processed/filtered/clean_df.csv"
+    DF_TEST_PATH: "/notebooks/anomaly-detector/data/processed/filtered/dirty_df.csv"
+  
+  PLOT_PARAMS:
+    'history_static': True
+    'history_html': False
+    'db_time_static': True
+    'db_time_html': False
+    'labels_static': True
+    'labels_html': False
+    'thresholds_static' : True
+    'thresholds_html' : True
+
+UNIVARIATE:
+  ALGORITHM: 'knn'
+
+  PREPROCESSING_PARAMS:
+    'downsamplig_rate': 5
+    'normalization': null  # z-score, min-max, all, null
+    'metric': [ 'Database Time Per Sec' ]
+
+  TRAINING_PARAMS:
+    'contamination': 0.001
+
+  INTERVALS_PARAMS:
+    'start': 0
+    'end': 30240
+
+  TH_ALGORITHM: 'yj'  # clust
+  
+  PATH_PARAMS:
+    DF_PATH: "/notebooks/anomaly-detector/data/raw/V_GV_SYSMETRIC_INCTANCE_2.csv"
+    DF_TRAIN_PATH: "/notebooks/anomaly-detector/data/processed/filtered/clean_df.csv"
+    DF_TEST_PATH: "/notebooks/anomaly-detector/data/processed/filtered/dirty_df.csv"
+  
+  PLOT_PARAMS:
+    'db_time_static': True
+    'db_time_html': False
+    'labels_static': True
+    'labels_html': False
+    'thresholds_static' : True
+    'thresholds_html' : True

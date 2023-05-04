@@ -8,22 +8,24 @@ MULTIVARIATE:
   PREPROCESSING_PARAMS:
     'downsamplig_rate': 5
     'window_size': 12  # 12
-    'normalization': 'all'
+    'normalization': 'min-max'
     'metrics': 'columns_6'  # accept a list of columns [metric1, metric2, ...]
-    'single_file' : True  # if data is already divided in Train and Test data
+    'single_file' : False  # if data is already divided in Train and Test data
 
   TRAINING_PARAMS:
     'batch_size': 32  # 32
-    'epochs': 100
+    'epochs': 70
     'hidden_size': 10  # 8, 10, 12, 14
     'alpha': 0.5
     'beta': 0.5
 
   INTERVALS_PARAMS:
-    'train_start': 40320
-    'train_end': 70560
-    'test_start': 0
-    'test_end': 30240
+    'train_start': 36945  # 40320
+    'train_end': 67047  # 70560
+    'test_start': 67047  # 27004
+    'test_end': 78503  # 36945
+    'th_start': 0  
+    'th_end': 0  
 
   TH_ALGORITHM: 'iqr'
   
@@ -55,7 +57,7 @@ UNIVARIATE:
 
   INTERVALS_PARAMS:
     'start': 0
-    'end': 30240
+    'end': 67047
 
   TH_ALGORITHM: 'yj'  # clust
   

@@ -1,3 +1,5 @@
+# TO-DO: the update version is on the notebook, the .py version must be changed
+
 from src.multivariate_ad import Multivariate_ad
 from src.univariate_ad import Univariate_ad
 

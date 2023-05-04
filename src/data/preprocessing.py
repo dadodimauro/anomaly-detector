@@ -268,7 +268,7 @@ def get_db_time(df, PREPROCESSING_PARAMS, INTERVALS_PARAMS=None, multi=True):
 # TODO: add function to retreive train and test from 'filtered' folder instead of from INTERVALS_PARAMS
 # TODO: change it to return always the same number of values (maybe set None) to make it safer
 def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='z-score', 
-                                       multi=True, single_file=True, df_train=None, df_test=None):
+                                       multi=True, single_file=True, df_train=None, df_test=None, df_th=None):
     """
     function that handles the data preprocessing
 
@@ -286,7 +286,7 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
         ATTENTION:
             - 4 df and 2 DatetimeIndex are returned if set to True (train and test)
             - 1 df and 1 DatetimeIndex are returned if set to False
-    single_file : boolin 
+    single_file : bool 
         True if data is in a single df, False if is already divided in Train and Test
     train_df : pandas.DataFrame
         needed only in the case where data is already divided in Train and Test data
@@ -297,9 +297,9 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
     -------
     (pandas.DataFrame, ..., pandas.DatetimeIndex)
         if multi is True:
-            - 2 DataFrames containing Train and Test data
-            - 2 DataFrames containing the "windowed" Train and Test data
-            - 2 DatetimeIndex for the Train and Test data
+            - 3 DataFrames containing Train, Test and Threhsolding data
+            - 3 DataFrames containing the "windowed" Train, Test and Threhsolding data
+            - 3 DatetimeIndex for the Train, Test and Threhsolding data
         if multi is False:
             - 1 DataFrame containing the data
             - 1 DatetimeIndex for the data
@@ -310,22 +310,27 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
             if INTERVALS_PARAMS is None:
                 df_len = len(df)
                 train_start = 0
-                train_end = int(np.floor(0.7 * df_len))  # 70 train, 30 test
-                test_start = int(np.floor(0.3 * df_len))
+                train_end = int(np.floor(0.6 * df_len))  # 60 train, 20 thresholding, 20 test
+                th_start = train_end
+                th_end = th_start + int(np.floor(0.2 * df_len))
+                test_start = th_end
                 test_end = df_len
             else:
                 train_start = INTERVALS_PARAMS['train_start']
                 train_end = INTERVALS_PARAMS['train_end']
                 test_start = INTERVALS_PARAMS['test_start']
                 test_end = INTERVALS_PARAMS['test_end']
+                th_start = INTERVALS_PARAMS['th_start']
+                th_end = INTERVALS_PARAMS['th_end']
 
             df_train = df[train_start:train_end]  # .reset_index(drop=True)
             df_test = df[test_start:test_end]  # .reset_index(drop=True)
+            df_th = df[th_start:th_end] 
         
         else:  # single_file is False
-            if df_train is None or df_test is None:
-                print('Error: missing df_train or df_test')
-                return None, None, None, None
+            if df_train is None or df_test is None:  # or df_th is None:
+                print('Error: missing df_train or df_test or df_th')
+                return None, None, None, None, None, None  # , None, None, None
 
         downsampling_rate = PREPROCESSING_PARAMS['downsamplig_rate']
 
@@ -352,13 +357,23 @@ def data_preprocessing(PREPROCESSING_PARAMS, df, INTERVALS_PARAMS=None, scaler='
         df_test = df_test.reset_index(drop=True)
         if scaler is not None:
             df_test = normalize_data(df_test, scaler=scaler)
+            
+        # thresholding dataset
+        # if downsampling_rate > 0:
+        #     df_th = downsampling(df_th, downsampling_rate)
+        # th_timestamps = df_th.index
+        # df_th = df_th.reset_index(drop=True)
+        # if scaler is not None:
+        #     df_th = normalize_data(df_th, scaler=scaler)
 
         # create windows
         window_size = PREPROCESSING_PARAMS['window_size']
 
         windows_train = create_windows(df_train, window_size)
         windows_test = create_windows(df_test, window_size)
+        # windows_th = create_windows(df_th, window_size)
 
+        # return df_train, df_test, df_th, windows_train, windows_test, windows_th, train_timestamps, test_timestamps, th_timestamps
         return df_train, df_test, windows_train, windows_test, train_timestamps, test_timestamps
 
     elif multi is False and single_file is True:

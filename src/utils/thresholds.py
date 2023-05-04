@@ -1,4 +1,5 @@
 import importlib
+import numpy as np
 
 
 # https://github.com/KulikDM/pythresh
@@ -75,4 +76,26 @@ def get_labels(th_algorithm, y_pred, max_contamination=0.1):
 
     th, labels = get_th_and_labels(th_algorithm, y_pred, max_contamination=max_contamination)
 
+    return labels
+
+
+def MinMaxNorm(x):
+    x_norm = (x-np.min(x))/(np.max(x)-np.min(x))
+    return x_norm
+
+
+def get_labels_from_th(th, y_pred):
+    labels = np.where(MinMaxNorm(y_pred) > th, 1, 0)
+    return labels
+
+
+def adjust_labels(labels, window_size):
+    l = labels.copy()
+    for i, label in enumerate(l):
+        if label == 1:
+            if i-window_size < 0:
+                labels[0:i] = 1
+            else:
+                labels[i-window_size:i] = 1
+    
     return labels

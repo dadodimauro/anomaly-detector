@@ -147,3 +147,37 @@ def remove_week_with_anomalies(df, anomalies_intervals_df):
     
     return clean_df, dirty_df
 
+
+# NOT WORKING
+# TO-DO fix it
+def remove_days_with_anomalies(df, anomalies_intervals_df):
+    """
+    Remove the days containing anomalies from a DataFrame
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    anomalies_intervals_df : pandas.DataFrame
+        DataFrame containing the anomalies intervals
+
+    Returns
+    -------
+    (pandas.DataFrame, pandas.DataFrame)
+        returns 2 DataFrame, one with the 'clean' and one with the 'dirty' data
+    """
+
+    anomaly_days = set(anomalies_intervals_df['start'].dt.isocalendar().day).union(
+                                                            set(anomalies_intervals_df['end'].dt.isocalendar().day))
+    
+    clean_df = df[~df.index.isocalendar().day.isin(anomaly_days)]
+    index = clean_df.index
+    clean_df = clean_df.reset_index()
+    clean_df['BEGIN_TIME'] = index
+    
+    dirty_df = df[df.index.isocalendar().day.isin(anomaly_days)]
+    index = dirty_df.index
+    dirty_df = dirty_df.reset_index()
+    dirty_df['BEGIN_TIME'] = index
+    
+    return clean_df, dirty_df
+
